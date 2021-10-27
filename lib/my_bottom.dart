@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sleep_music/my_bottom_provider.dart';
 
 // ignore: must_be_immutable
 class MyBottom extends StatelessWidget {
-  final Function(int) onTapped;
-  int selectedIndex;
-
-  MyBottom({
-    Key? key,
-    required this.onTapped,
-    required this.selectedIndex,
-  }) : super(key: key);
+  const MyBottom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
+    // возвращаем потребителя
+    // Потребитель ищет виджет-предок Provider и получает его модель.
+    // Затем он использует эту модель для создания виджетов и запускает
+    // перестройку, если модель обновляется.
+    return Consumer<MyBottomProvider>(
+      builder: (context, bottomProvider, child) => BottomNavigationBar(
         items: _myBottomItems,
-        currentIndex: selectedIndex,
-        onTap: onTapped,
+        currentIndex: bottomProvider.currentIndex,
+        onTap: (index) => bottomProvider.currentIndex = index,
         elevation: 8,
         unselectedItemColor: const Color(0xFF98A1BD),
         selectedItemColor: const Color(0xFFE6E7F2),
@@ -27,6 +27,7 @@ class MyBottom extends StatelessWidget {
         backgroundColor: const Color(0xFF03174D),
         // фиксируем расстояние между элементами
         type: BottomNavigationBarType.fixed,
+      ),
     );
   }
 

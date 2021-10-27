@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-
 class MyBottomProvider extends ChangeNotifier {
   int _currentIndex = 0;
 
@@ -11,6 +10,4 @@ class MyBottomProvider extends ChangeNotifier {
     // Этот вызов сообщает виджетам, которые слушают эту модель, о необходимости перестроиться
     notifyListeners();
   }
-
-
 }
