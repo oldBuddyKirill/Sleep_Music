@@ -11,8 +11,10 @@ class MyTileData {
   factory MyTileData.fromJson(Map<String, dynamic> json) {
     // конструктор factory более универсальный
     return MyTileData(
-      assetName: json['assetName'], // инициализируем свойство assetName класса MyTile значением объекта json под ключом assetName
-      title: json['title'], // инициализируем свойство (поле) title класса MyTile значением объекта json под ключом title
+      // инициализируем свойство assetName класса MyTileData значением объекта json под ключом assetName
+      assetName: json['assetName'],
+      // инициализируем свойство (поле) title класса MyTileData значением объекта json под ключом title
+      title: json['title'],
     );
   }
 
@@ -23,9 +25,9 @@ class MyTileData {
    */
 
   static List<MyTileData> fromJsonArray(dynamic jsonArray) {
-    // функция, возвращающая статический масскив объектов MyTile
+    // функция, возвращающая статический масскив объектов MyTileData
     // входной параметр - ЛЮБОЙ тип данных, в нашем случае это - массив объектов json
-    List<MyTileData> result = []; // создаём пустой массив для объектов класса MyTile
+    List<MyTileData> result = []; // создаём пустой массив для объектов класса MyTileData
     for (var it in jsonArray) {
       // проверяем каждую переменную в json массиве
       if (it['assetName'] is String && it['title'] is String) {

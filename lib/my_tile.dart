@@ -24,7 +24,7 @@ class MyTile extends StatelessWidget {
     );
   }
 
-  Widget _myContainer(String assetName) => Container(
+  Container _myContainer(String assetName) => Container(
     child: Image(
       image: AssetImage('assets/$assetName'), // внииательнее с assets/
       // конкатенация 'выражение' + 'выражение'
@@ -36,7 +36,7 @@ class MyTile extends StatelessWidget {
     margin: const EdgeInsets.only(bottom: 11.37),
   );
 
-  Widget _mySizedBox(String mText) => SizedBox(
+  SizedBox _mySizedBox(String mText) => SizedBox(
     height: 40.07,
     width: 131.32,
     child: Column(

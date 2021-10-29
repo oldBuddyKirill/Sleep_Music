@@ -3,10 +3,34 @@ import 'package:flutter/foundation.dart';
 import 'package:sleep_music/data_repository.dart';
 import 'package:sleep_music/my_tile_data.dart';
 
-
 class MyHomePageProvider extends ChangeNotifier {
-  Future<List<MyTileData>?> get dataList async {
-    await DataRepository.getListData();
-    notifyListeners();
+  List<MyTileData>? _dataList;
+  bool isEnableRefresh = false;
+  bool isError = false;
+
+  List<MyTileData>? get dataList {
+    return _dataList;
+  }
+
+  Future<List<MyTileData>?> loadDataList() async {
+    try {
+      _dataList = await DataRepository.getListData();
+      isError = false;
+    } catch (e) {
+      isError = true;
+    } finally {
+      isEnableRefresh = true;
+      notifyListeners();
+    }
+  }
+
+  void onRefreshTap() {
+    if (isEnableRefresh) {
+      isError = false;
+      _dataList = null;
+      // делаем кнопку неактивной во время выполнения функции
+      isEnableRefresh = false;
+      notifyListeners();
+    }
   }
 }
