@@ -7,6 +7,7 @@ class MyHomePageProvider extends ChangeNotifier {
   List<MyTileData>? _dataList;
   bool isEnableRefresh = false;
   bool isError = false;
+  Object? error;
 
   List<MyTileData>? get dataList {
     return _dataList;
@@ -17,6 +18,7 @@ class MyHomePageProvider extends ChangeNotifier {
       _dataList = await DataRepository.getListData();
       isError = false;
     } catch (e) {
+      error = e;
       isError = true;
     } finally {
       isEnableRefresh = true;
@@ -31,6 +33,7 @@ class MyHomePageProvider extends ChangeNotifier {
       // делаем кнопку неактивной во время выполнения функции
       isEnableRefresh = false;
       notifyListeners();
+      loadDataList();
     }
   }
 }

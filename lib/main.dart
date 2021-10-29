@@ -14,7 +14,7 @@ void main() {
       // можно использовать любое слово вместо context
       providers: [
         ChangeNotifierProvider<MyBottomProvider>(create: (context) => MyBottomProvider()),
-        ChangeNotifierProvider<MyHomePageProvider>(create: (context) => MyHomePageProvider()),
+        ChangeNotifierProvider<MyHomePageProvider>(create: (context) => MyHomePageProvider()..loadDataList()),
       ],
       child: const MyApp(),
     ),
@@ -60,58 +60,54 @@ class MyHomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            //onPressed: null,
-            onPressed: () {
-              //не получится использовать Provider.of<MyHomePageProvider>(context);
-              var homePageProvider = context.read<MyHomePageProvider>();
-              homePageProvider.onRefreshTap();
-            },
+            //не получится использовать Provider.of<MyHomePageProvider>(context);
+            onPressed: () => context.read<MyHomePageProvider>().onRefreshTap(),
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
       body: Consumer<MyHomePageProvider>(
         builder: (context, homePageProvider, child) {
-          if (!homePageProvider.isError) {
-            if (homePageProvider.dataList != null) {
-              return SingleChildScrollView(
-                // возможность прокрутки дочернего виджета
-                child: SafeArea(
-                  child: Center(
-                    child: Wrap(
-                      spacing: (_screenWidth - 174.37 * 2) / 3, // горизонтальный отступ
-                      runSpacing: 20, // вертикальный отступ
-                      // явно указываем, что dataList != null
-                      // конвертируем dataList в map, а потом перобразовываем в массив словарей,
-                      // передавая в конструктор класса MyTile значение item
-                      children: homePageProvider.dataList!.map((item) => MyTile(data: item)).toList(),
-                    ),
-                  ),
-                ),
-              );
-            } else {
-              // dataList == null
-              homePageProvider.loadDataList();
-              // по умолчанию показываем загрузочный спиннер
-              return const Center(child: CircularProgressIndicator());
-            }
-          } else {
-            // isError == true
-            return const Center(
-              child: Text(
-                'Error',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFFE6E7F2),
-                  fontFamily: 'HelveticaNeueCyr',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            );
+          if (homePageProvider.isError) {
+            return _errorWidget(homePageProvider.error);
           }
+          if (homePageProvider.dataList != null) {
+            return _showDataListWidget(screenWidth: _screenWidth, provider: homePageProvider);
+          }
+          // dataList == null
+          // по умолчанию показываем загрузочный спиннер
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       bottomNavigationBar: const MyBottom(),
     );
   }
 }
+
+Center _errorWidget (Object? error) => Center(
+      child: Text(
+        '$error',
+        style: const TextStyle(
+          fontSize: 20,
+          color: Color(0xFFE6E7F2),
+          fontFamily: 'HelveticaNeueCyr',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+
+SingleChildScrollView _showDataListWidget({required double screenWidth, required MyHomePageProvider provider}) => SingleChildScrollView(
+      // возможность прокрутки дочернего виджета
+      child: SafeArea(
+        child: Center(
+          child: Wrap(
+            spacing: (screenWidth - 174.37 * 2) / 3, // горизонтальный отступ
+            runSpacing: 20, // вертикальный отступ
+            // явно указываем, что dataList != null
+            // конвертируем dataList в map, а потом перобразовываем в массив словарей,
+            // передавая в конструктор класса MyTile значение item
+            children: provider.dataList!.map((item) => MyTile(data: item)).toList(),
+          ),
+        ),
+      ),
+    );
