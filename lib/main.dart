@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sleep_music/bottom_navigation_bar/bloc/bottom_bloc.dart';
 import 'package:sleep_music/my_bottom.dart';
 import 'package:sleep_music/my_bottom_provider.dart';
 import 'package:sleep_music/my_home_page_provider.dart';
@@ -7,17 +9,21 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      // иницмализируем модель провайдера.
-      // провайдер будет владеть жизненным циклом счётчика,
-      // вызывая метод 'dispose', когда он больше не нужен.
-      // можно использовать любое слово вместо context
-      providers: [
-        ChangeNotifierProvider<MyBottomProvider>(create: (context) => MyBottomProvider()),
-        ChangeNotifierProvider<MyHomePageProvider>(create: (context) => MyHomePageProvider()..loadDataList()),
-      ],
+    BlocProvider(
+      create: (_) => BottomBloc(),
       child: const MyApp(),
     ),
+    // MultiProvider(
+    //   // иницмализируем модель провайдера.
+    //   // провайдер будет владеть жизненным циклом счётчика,
+    //   // вызывая метод 'dispose', когда он больше не нужен.
+    //   // можно использовать любое слово вместо context
+    //   providers: [
+    //     ChangeNotifierProvider<MyBottomProvider>(create: (context) => MyBottomProvider()),
+    //     ChangeNotifierProvider<MyHomePageProvider>(create: (context) => MyHomePageProvider()..loadDataList()),
+    //   ],
+    //   child: const MyApp(),
+    // ),
   );
 }
 
@@ -58,15 +64,16 @@ class MyHomePage extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            //не получится использовать Provider.of<MyHomePageProvider>(context);
-            onPressed: () => context.read<MyHomePageProvider>().onRefreshTap(),
-            icon: const Icon(Icons.refresh),
+            // onPressed: () => context.read<MyHomePageProvider>().onRefreshTap(),
+             onPressed: null,
+             icon: Icon(Icons.refresh),
           ),
         ],
       ),
-      body: Consumer<MyHomePageProvider>(
+      body: null,
+      /*Consumer<MyHomePageProvider>(
         builder: (context, homePageProvider, child) {
           if (homePageProvider.isError) {
             return _errorWidget(homePageProvider.error);
@@ -79,11 +86,12 @@ class MyHomePage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         },
       ),
+      */
       bottomNavigationBar: const MyBottom(),
     );
   }
 }
-
+/*
 Center _errorWidget (Object? error) => Center(
       child: Text(
         '$error',
@@ -111,3 +119,4 @@ SingleChildScrollView _showDataListWidget({required double screenWidth, required
         ),
       ),
     );
+*/

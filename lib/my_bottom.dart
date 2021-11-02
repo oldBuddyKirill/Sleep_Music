@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:sleep_music/my_bottom_provider.dart';
+import 'package:sleep_music/bottom_navigation_bar/bloc/bottom_bloc.dart';
 
 // ignore: must_be_immutable
 class MyBottom extends StatelessWidget {
@@ -8,15 +9,13 @@ class MyBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // возвращаем потребителя
-    // Потребитель ищет виджет-предок Provider и получает его модель.
-    // Затем он использует эту модель для создания виджетов и запускает
-    // перестройку, если модель обновляется.
-    return Consumer<MyBottomProvider>(
-      builder: (context, bottomProvider, child) => BottomNavigationBar(
+    final BottomBloc bottomBloc = BlocProvider.of<BottomBloc>(context);
+    return BlocBuilder<BottomBloc, BottomState>(
+      bloc: bottomBloc,
+      builder: (context, state) => BottomNavigationBar(
         items: _myBottomItems,
-        currentIndex: bottomProvider.currentIndex,
-        onTap: (index) => bottomProvider.currentIndex = index,
+        currentIndex: bottomBloc.currentIndex,
+        onTap: (index) => context.read<BottomBloc>().add(Tap(index)),
         elevation: 8,
         unselectedItemColor: const Color(0xFF98A1BD),
         selectedItemColor: const Color(0xFFE6E7F2),
