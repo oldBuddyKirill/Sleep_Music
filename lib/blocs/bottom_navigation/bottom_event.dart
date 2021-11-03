@@ -3,8 +3,8 @@ part of 'bottom_bloc.dart';
 @immutable
 abstract class BottomEvent{}
 
-class Tap extends BottomEvent{
+class BottomTap extends BottomEvent{
 
   final int index;
-  Tap(this.index);
+  BottomTap(this.index);
 }

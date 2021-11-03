@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:sleep_music/data_api.dart';
-import 'package:sleep_music/my_tile_data.dart';
+import 'package:sleep_music/repositories/data_api.dart';
+import 'package:sleep_music/repositories/my_tile_data.dart';
 
 class DataRepository {
   static Future <List<MyTileData>?> getListData() async{ // создаём ассинхронную функцию getListData()
