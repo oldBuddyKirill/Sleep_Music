@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:sleep_music/bottom_navigation_bar/bloc/bottom_bloc.dart';
+import 'package:sleep_music/blocs/bottom_navigation/bottom_bloc.dart';
 
 // ignore: must_be_immutable
 class MyBottom extends StatelessWidget {
@@ -15,7 +15,7 @@ class MyBottom extends StatelessWidget {
       builder: (context, state) => BottomNavigationBar(
         items: _myBottomItems,
         currentIndex: bottomBloc.currentIndex,
-        onTap: (index) => context.read<BottomBloc>().add(Tap(index)),
+        onTap: (index) => context.read<BottomBloc>().add(BottomTap(index)),
         elevation: 8,
         unselectedItemColor: const Color(0xFF98A1BD),
         selectedItemColor: const Color(0xFFE6E7F2),

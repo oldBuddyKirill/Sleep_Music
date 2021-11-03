@@ -3,7 +3,6 @@ class MyTileData {
   final String title;
 
   const MyTileData({
-    // интересный конструктор
     required this.assetName,
     required this.title,
   });
